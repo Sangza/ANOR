@@ -3,7 +3,7 @@
 const [isOutcome, Asker_wins, Guesser_wins, Draw] = makeEnum(3);
 
 const game = (asker_number, guesser_number) => {
-    const prize_percent = ((abs(10 - (asker_number - guesser_number)) * 10));
+    const prize_percent = ((10 - abs((asker_number - guesser_number)))) * 10;
 
     if (prize_percent > 50) { 
         result = Guesser_wins;
@@ -13,12 +13,7 @@ const game = (asker_number, guesser_number) => {
         result = Draw;
     }
 
-    const result = {
-        prize : prize_percent,
-        result : result
-    };
-
-    return result;
+    return { prize_percent, result, asker_number, guesser_number };
 };
 
 const Player = {
@@ -32,16 +27,16 @@ export const main = Reach.App(() => {
     const Asker = Participant('Asker', {
         ...Player,
         wager: UInt,
-        deadline: UInt
+        deadline: UInt,
     });
     const Guesser = Participant('Guesser', {
         ...Player,
-        acceptWager: Fun([UInt], Null)
+        acceptWager: Fun([UInt], Null),
     });
     init();
 
     const informTimeout = () => {
-        each([Alice, Bob], () => {
+        each([Asker, Guesser], () => {
         interact.informTimeout();
         });
     };
@@ -66,12 +61,14 @@ export const main = Reach.App(() => {
       const [_commitAsker, _saltAsker] = makeCommitment(interact, _askerNumber);
       const commitAsker = declassify(_commitAsker);
     });
+ 
+    commit();
 
     Asker.publish(commitAsker).timeout(relativeTime(deadline), () => closeTo(Guesser, informTimeout));
 
     commit();
 
-    unknowable(Guesser, Asker(_handAsker, _saltAsker));
+    unknowable(Guesser, Asker(_askerNumber, _saltAsker));
 
     Guesser.only(() => {
       const guesserNumber = declassify(interact.getNumber());
@@ -90,11 +87,11 @@ export const main = Reach.App(() => {
 
     checkCommitment(commitAsker, saltAsker, askerNumber);
 
-    outcome = game(askerNumber, guesserNumber);
+    const outcome = game(askerNumber, guesserNumber);
 
     assert(outcome.result == Asker_wins || outcome.result == Guesser_wins || outcome.result == Draw);
 
-    transfer((outcome.prize / 100) * wager).to(outcome.result == Asker_wins ? Asker : Guesser);
+    transfer((outcome.prize_percent / 100) * (2 * wager)).to(outcome.result == Asker_wins ? Asker : Guesser);
 
     commit();
 

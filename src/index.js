@@ -3,26 +3,35 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import FundAccount from './view_c/fund';
-import GameChoice from './view_c/game_choice';
-import Wager from './view_c/wager';
+import { Provider } from 'react-redux';
+import store from './redux/store';
+import FundAccount from './components/fund';
+import Role from './components/role';
+import Play from './components/play';
+import Player from './components/player';
+import OutCome from './components/outcome';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <Routes>
-        <Route path='/' element={<App/>}>
-          <Route path='/fund' element={<FundAccount funding={{amount : defaults.defaultFundAmt, account, balance}}/>}/>
-          <Route path='/game_choice' element={<GameChoice/>}>
-            <Route path='/game_choice/:player' element={<Wager/>}/>
+    <Provider store={store}>
+      <Router>
+        <Routes>
+          <Route path='/' element={<App/>}>
+            <Route path='fund' element={<FundAccount/>
+            <Route path='role' element={<Role/>}/>
+            <Route path='play' element={<Play/>}>
+              <Route path=':role' element={<Play/>}/>
+            </Route>
+            <Route path='player' element={<Player/>}>
+              <Route path=':role' element={<Player/>}/>
+            </Route>
+            <Route path='outcome' element={<OutCome/>}>
+              <Route path=':role' element={<OutCome/>}/>
+            </Route>
           </Route>
-          <Route path='/play' element={<Play/>}/>
-          <Route path='/waiting' element={<Waiting/>}/>
-          <Route path='/timeout' element={<TimeOut/>}/>
-          <Route path='/outcome' element={<OutCome/>}/>
-        </Route>
-      </Routes>
-    </Router>
+        </Routes>
+      </Router>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

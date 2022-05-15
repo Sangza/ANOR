@@ -7,17 +7,19 @@ const reach = loadStdlib(process.env);
 
 const navigate = useNavigate();
 
-function GameChoice(props) {
+function Role(props) {
     const asker = (e) => {
         e.preventDefault;
+        navigate("/player/asker");
     };
 
     const guesser = (e) => {
         e.preventDefault;
+        navigate("/player/guesser");
     };
 
     return (
-        <div className='game_choice'>
+        <div className='role'>
             <h1>Which role would you like to player in the game</h1>
             <div className='choice'>
                 <button className='asker' onClick={asker}> Asker</button>
@@ -27,4 +29,4 @@ function GameChoice(props) {
     );
 };
 
-export default GameChoice;
+export default Role;
