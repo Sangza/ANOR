@@ -17,13 +17,13 @@ ReactDOM.render(
       <Router>
         <Routes>
           <Route path='/' element={<App/>}>
-            <Route path='fund' element={<FundAccount/>
+            <Route path='fund' element={<FundAccount/>}/>
             <Route path='role' element={<Role/>}/>
             <Route path='play' element={<Play/>}>
               <Route path=':role' element={<Play/>}/>
             </Route>
             <Route path='player' element={<Player/>}>
-              <Route path=':role' element={<Player/>}/>
+              <Route path=':role' element={<Player/>}s/>
             </Route>
             <Route path='outcome' element={<OutCome/>}>
               <Route path=':role' element={<OutCome/>}/>

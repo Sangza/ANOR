@@ -1,15 +1,15 @@
 import '../App.css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { getContract } from './redux/selector';
-import { updateNumber } from './redux/slice';
-import * as backend from './build/index.main.mjs';
+import { useSelector } from 'react-redux';
+import { getContract } from '../redux/selector';
+// import { updateNumber } from '../redux/slice';
+import * as backend from '../build/index.main.mjs';
 import { loadStdlib } from '@reach-sh/stdlib';
+import { ALGO_MyAlogoConnect as MyAlgoConnect } from '@reach-sh/stdlib';
 const reach = loadStdlib(process.env);
+reach.setWalletFallback(reach.walletFallback({providerEnv: "TestNet", MyAlgoConnect}));
 
-const navigate = useNavigate();
-const params = useParams();
 const sleep = (milliseconds) => new Promise(resolve => setTimeout(resolve, milliseconds));
 
 function Play(props) {
@@ -17,11 +17,12 @@ function Play(props) {
     const [play, setPlay] =useState(true);
     const [waiting, setwaiting] = useState(false);
     const [timeout, settimeout] = useState(false);
-    const dispatch = useDispatch();
     const _fetch = useSelector();
+    const navigate = useNavigate();
+    const params = useParams();
 
     const handleClick = async(e) => {
-        e.preventDefault;
+        e.preventDefault();
         const interactInterface = {
             random() { return reach.hasRandom.random(); },
             getNumber() {
@@ -31,46 +32,48 @@ function Play(props) {
                 settimeout(true);
             }
         };
-        if(params.role == "asker") {
+        if(params.role === "asker") {
             backend.Asker(_fetch(getContract), interactInterface);
-        } else if(params.role == "guesser") {
+        } else if(params.role === "guesser") {
             backend.Guesser(_fetch(getContract), interactInterface);
         };
         setPlay(false);
         setwaiting(true);
         await sleep(1500);
-        if(timeout == false && params.role == "asker") {
+        if(timeout === false && params.role === "asker") {
             navigate("/outcome/asker"); 
-        } else if(timeout == false && params.role == "guesser") {
+        } else if(timeout === false && params.role === "guesser") {
             navigate("/outcome/guesser"); 
         };
     };
 
     return (
-        { play && 
-            <div className='play'>
-                <h1>Play your Unique_Number</h1>
-                <p>Remember that your number must fall in range of 0 - 10</p>
-                <div className='input_number'>
-                    <input placeholder='Input your number' type='text' onChange={e => setNumber(e.target.value)}/>
+        <div>
+            {play && 
+                <div className='play'>
+                    <h1>Play your Unique_Number</h1>
+                    <p>Remember that your number must fall in range of 0 - 10</p>
+                    <div className='input_number'>
+                        <input placeholder='Input your number' type='text' onChange={e => setNumber(e.target.value)}/>
+                    </div>
+                    <div className='btn_play'>
+                        <button className='play_btn' onClick={handleClick}>Play</button>
+                    </div>
                 </div>
-                <div className='btn_play'>
-                    <button className='play_btn' onClick={handleClick}>Play</button>
+            }
+            {waiting &&
+                <div>
+                    Waiting for the other player...
+                    <br />Think about which number you want to play.
                 </div>
-            </div>
-        }
-        { waiting &&
-            <div>
-                Waiting for the other player...
-                <br />Think about which number you want to play.
-            </div>
-        }
-        { timeout &&
-            <div>
-                There has been a Timeout...
-                <br />Somebody took too long.
-            </div>
-        }
+            }
+            {timeout &&
+                <div>
+                    There has been a Timeout...
+                    <br />Somebody took too long.
+                </div>
+            }
+        </div>
     );
 };
 

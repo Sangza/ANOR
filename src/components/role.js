@@ -1,20 +1,22 @@
 import '../App.css';
-import { useState, useEffect } from 'react';
+// import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as backend from './build/index.main.mjs';
+// import * as backend from '../build/index.main.mjs';
 import { loadStdlib } from '@reach-sh/stdlib';
+import { ALGO_MyAlogoConnect as MyAlgoConnect } from '@reach-sh/stdlib';
 const reach = loadStdlib(process.env);
+reach.setWalletFallback(reach.walletFallback({providerEnv: "TestNet", MyAlgoConnect}));
 
-const navigate = useNavigate();
+function Role() {
+    const navigate = useNavigate();
 
-function Role(props) {
     const asker = (e) => {
-        e.preventDefault;
+        e.preventDefault();
         navigate("/player/asker");
     };
 
     const guesser = (e) => {
-        e.preventDefault;
+        e.preventDefault();
         navigate("/player/guesser");
     };
 

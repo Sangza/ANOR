@@ -2,46 +2,57 @@ import '../App.css';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getContract, getAccount } from './redux/selector';
-import { updateOutcome } from './redux/slice';
-import * as backend from './build/index.main.mjs';
+import { getContract, getWager } from '../redux/selector';
+import { updateOutcome } from '../redux/slice';
+import * as backend from '../build/index.main.mjs';
 import { loadStdlib } from '@reach-sh/stdlib';
+import { ALGO_MyAlogoConnect as MyAlgoConnect } from '@reach-sh/stdlib';
 const reach = loadStdlib(process.env);
+reach.setWalletFallback(reach.walletFallback({providerEnv: "TestNet", MyAlgoConnect}));
 
 const {standardUnit} = reach;
-const params = useParams();
 
 function OutCome() {
 	const [outcome, setOutcome] = useState();
+	const [askerNum, setAskerNum] = useState();
+	const [guesserNum, setGuesserNum] = useState();
 	const dispatch = useDispatch();
     const _fetch = useSelector();
+    const params = useParams();
 
 	useEffect(() => {
 		const interactInterface = {
-			seeOutcome(outcome) {
-				setOutcome(outcome);
+			seeOutcome(prize_percent) {
+				setOutcome(prize_percent);
+			},
+			seeNumbers(a, b) {
+				setAskerNum(a);
+				setGuesserNum(b);
 			}
 		};
-		if(params.role == "asker") {
+		if(params.role === "asker") {
             backend.Asker(_fetch(getContract), interactInterface);
-        } else if(params.role == "guesser") {
+        } else if(params.role === "guesser") {
             backend.Guesser(_fetch(getContract), interactInterface);
         };
         dispatch(updateOutcome(outcome));
-	}, []);
+	});
+
+	const result = () => {
+		if(params.role === "asker") {
+	        return <h1>Your Number was {askerNum}, while your Opponents's number was {guesserNum}.</h1>
+    	} else if(params.role === "guesser") {
+	        return <h1>Your Number was {guesserNum}, while your Opponents's number was {askerNum}.</h1>
+	    };
+	};
 
     return(
         <div className='outcome'>
-            <h1>The Result of the game is {outcome}</h1>
-            {
-            	if(params.role == "asker") {
-            		<h1>Your Number was {outcome.asker_number}, while your Opponents's number was {outcome.guesser_number}.</h1>;
-            	} else if(params.role == "guesser") {
-            		<h1>Your Number was {outcome.guesser_number}, while your Opponents's number was {outcome.asker_number}.</h1>;
-           		};
-            }
-            <h1>You get {outcome.prize_percent}% of our Luck Pool. Which is equivalent to {(outcome.prize_percent / 100) * (2 * _fetch(getWager))} {standardUnit}.</h1>
-            <h1>Your balance is {(_fetch.getAccount.balance) + ((outcome.prize_percent / 100) * (2 * _fetch(getWager)))}</h1>
+            <div>
+	    		{result()}
+            </div>
+            <h1>You get {outcome}% of our Luck Pool. Which is equivalent to {(outcome / 100) * (2 * _fetch(getWager))} {standardUnit}.</h1>
+            <h1>Your balance is {(_fetch.getAccount.balance) + ((outcome / 100) * (2 * _fetch(getWager)))}</h1>
         </div>
     );
 };

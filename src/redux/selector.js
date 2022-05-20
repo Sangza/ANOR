@@ -8,4 +8,4 @@ const getNumber = (state) => (state.app._number);
 
 const getDefaults = (state) => (state.app.defaults); 
 
-export default { getAccount, getContract, getWager, getNumber, getDefaults };
+export { getAccount, getContract, getWager, getNumber, getDefaults };

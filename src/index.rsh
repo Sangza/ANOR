@@ -1,25 +1,21 @@
 'reach 0.1';
 
-const [isOutcome, Asker_wins, Guesser_wins, Draw] = makeEnum(3);
-
-const game = (asker_number, guesser_number) => {
-    const prize_percent = ((10 - abs((asker_number - guesser_number)))) * 10;
-
-    if (prize_percent > 50) { 
-        result = Guesser_wins;
-    } else if (prize_percent < 50) {
-        result = Asker_wins;
+const game = (askerNumber, guesserNumber) => {
+    const a = askerNumber;
+    const b = guesserNumber;
+    
+    if(askerNumber >= guesserNumber) {
+        return (10 - (a - b)) * 10;
     } else {
-        result = Draw;
-    }
-
-    return { prize_percent, result, asker_number, guesser_number };
+        return (10 - (b - a)) * 10;
+    };
 };
 
 const Player = {
     ...hasRandom,
     getNumber: Fun([], UInt),
     seeOutcome: Fun([UInt], Null),
+    seeNumbers: Fun([UInt, UInt], Null),
     informTimeout: Fun([], Null)
 };
 
@@ -89,13 +85,13 @@ export const main = Reach.App(() => {
 
     const outcome = game(askerNumber, guesserNumber);
 
-    assert(outcome.result == Asker_wins || outcome.result == Guesser_wins || outcome.result == Draw);
-
-    transfer((outcome.prize_percent / 100) * (2 * wager)).to(outcome.result == Asker_wins ? Asker : Guesser);
+    transfer((outcome / 100) * (2 * wager)).to(Guesser);
+    transfer(((100 - outcome) / 100) * (2 * wager)).to(Asker);
 
     commit();
 
     each([Asker, Guesser], () => {
         interact.seeOutcome(outcome);
+        interact.seeNumbers(askerNumber, guesserNumber);
     });
 });
