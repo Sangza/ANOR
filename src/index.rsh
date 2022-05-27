@@ -52,6 +52,8 @@ export const main = Reach.App(() => {
 
     Guesser.pay(wager).timeout(relativeTime(deadline), () => closeTo(Asker, informTimeout));
 
+    commit();
+
     Asker.only(() => {
       const _askerNumber = interact.getNumber();
       const [_commitAsker, _saltAsker] = makeCommitment(interact, _askerNumber);

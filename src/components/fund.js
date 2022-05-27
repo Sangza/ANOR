@@ -6,9 +6,9 @@ import { useSelector } from 'react-redux';
 import { getAccount, getDefaults } from '../redux/selector';
 // import * as backend from '../build/index.main.mjs';
 import { loadStdlib } from '@reach-sh/stdlib';
-import { ALGO_MyAlogoConnect as MyAlgoConnect } from '@reach-sh/stdlib';
+// import { ALGO_MyAlogoConnect as MyAlgoConnect } from '@reach-sh/stdlib';
 const reach = loadStdlib(process.env);
-reach.setWalletFallback(reach.walletFallback({providerEnv: "TestNet", MyAlgoConnect}));
+// reach.setWalletFallback(reach.walletFallback({providerEnv: "TestNet", MyAlgoConnect}));
 
 const {standardUnit} = reach;
 
@@ -37,16 +37,16 @@ function FundAccount() {
 
     return (
         <Box>
-            <div className='bal'>
+            <Box>
                 <h1>Your Balance is currently {account.balance}</h1>
-            </div>
-            <h1>Do you want to fund your account with more {standardUnit}</h1>
+            </Box>
+            <h2>Do you want to fund your account with more {standardUnit}</h2>
             <div className='funding'>
                 <input onChange={handleChange} placeholder={defaults.defaultFundAmt} type='text'/>
-                <button className='funding_btn' onClick={handleClick}>Fund your Account</button>
+                <Button variant="contained" color="primary" onClick={handleClick} sx={{marginLeft: 10}} >Fund your Account</Button>
             </div>
             <div className='skip'>
-                <button className='skip_btn' onClick={skip}>Skip</button>
+                <Button variant="contained" color="primary" onClick={skip}>Skip</Button>
             </div>
         </Box>
     );

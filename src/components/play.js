@@ -6,9 +6,9 @@ import { getContract } from '../redux/selector';
 // import { updateNumber } from '../redux/slice';
 import * as backend from '../build/index.main.mjs';
 import { loadStdlib } from '@reach-sh/stdlib';
-import { ALGO_MyAlogoConnect as MyAlgoConnect } from '@reach-sh/stdlib';
+// import { ALGO_MyAlogoConnect as MyAlgoConnect } from '@reach-sh/stdlib';
 const reach = loadStdlib(process.env);
-reach.setWalletFallback(reach.walletFallback({providerEnv: "TestNet", MyAlgoConnect}));
+// reach.setWalletFallback(reach.walletFallback({providerEnv: "TestNet", MyAlgoConnect}));
 
 const sleep = (milliseconds) => new Promise(resolve => setTimeout(resolve, milliseconds));
 

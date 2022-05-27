@@ -6,9 +6,9 @@ import { getContract, getWager } from '../redux/selector';
 import { updateOutcome } from '../redux/slice';
 import * as backend from '../build/index.main.mjs';
 import { loadStdlib } from '@reach-sh/stdlib';
-import { ALGO_MyAlogoConnect as MyAlgoConnect } from '@reach-sh/stdlib';
+// import { ALGO_MyAlogoConnect as MyAlgoConnect } from '@reach-sh/stdlib';
 const reach = loadStdlib(process.env);
-reach.setWalletFallback(reach.walletFallback({providerEnv: "TestNet", MyAlgoConnect}));
+// reach.setWalletFallback(reach.walletFallback({providerEnv: "TestNet", MyAlgoConnect}));
 
 const {standardUnit} = reach;
 
