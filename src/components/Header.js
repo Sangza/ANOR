@@ -9,7 +9,7 @@ class Header extends React.Component {
 							
 							<div className="header_left">
 								<div className="fn_logo">
-									<a><img src="img/logo.png" alt=""></a>
+									<a><img src=".../public/img/logo.png" alt=""></a>
 								</div>
 								<div className="nav_list">
 									<ul className="main_menu">
@@ -34,7 +34,7 @@ class Header extends React.Component {
 					<div className="mobile_menu_inner">
 						<div className="mobile_in">
 							<div className="logo">
-								<a><img src="img/mobile-logo.png" alt="" /></a>
+								<a><img src=".../public/img/mobile-logo.png" alt="" /></a>
 							</div>
 							<div className="trigger">
 								<div className="hamburger hamburger--slider">

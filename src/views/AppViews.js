@@ -41,7 +41,7 @@ exports.Wrapper = class extends React.Component {
                 
                 <div className="header_left">
                   <div className="fn_logo">
-                    <a><img src="img/logo.png" alt=""></a>
+                    <a><img src=".../public/img/logo.png" alt=""></a>
                   </div>
                   <div className="nav_list">
                     <ul className="main_menu">
@@ -69,7 +69,7 @@ exports.Wrapper = class extends React.Component {
             <div className="mobile_menu_inner">
               <div className="mobile_in">
                 <div className="logo">
-                  <a><img src="img/mobile-logo.png" alt="" /></a>
+                  <a><img src=".../public/img/mobile-logo.png" alt="" /></a>
                 </div>
                 <div className="trigger">
                   <div className="hamburger hamburger--slider">
@@ -113,7 +113,7 @@ exports.FundAccount = class extends React.Component {
     return (
       <div className="anor_fn_modal report_box">
         <div className="modal_in">
-          <div className="modal_closer"><img src="svg/cancel.svg" alt="" className="fn__svg"></div>
+          <div className="modal_closer"><img src=".../public/svg/cancel.svg" alt="" className="fn__svg"></div>
           <div className="modal_title">Fund Your Account</div>
           <div className="modal_content">
             <h3 className="fn_title">Balance: {bal} {standardUnit}</h3>
@@ -154,7 +154,7 @@ exports.DeployerOrAttacher = class extends React.Component {
     return (
       <div className="anor_fn_modal report_box">
         <div className="modal_in">
-          <div className="modal_closer"><img src="svg/cancel.svg" alt="" className="fn__svg"></div>
+          <div className="modal_closer"><img src=".../public/svg/cancel.svg" alt="" className="fn__svg"></div>
           <div className="modal_title">Roles</div>
           <div className="modal_content">
             <h3 className="fn_title">Please select a role:</h3>
