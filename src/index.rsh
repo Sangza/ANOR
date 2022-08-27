@@ -1,99 +1,98 @@
 'reach 0.1';
+const [ isOutcome, B_WINS, DRAW, A_WINS ] = makeEnum(3);
 
-const game = (askerNumber, guesserNumber) => {
-    const a = askerNumber;
-    const b = guesserNumber;
-    
-    if(askerNumber >= guesserNumber) {
-        return (10 - (a - b)) * 10;
-    } else {
-        return (10 - (b - a)) * 10;
-    };
-};
-
+const winner = (price, guessAlice, guessBob) => {
+    if(guessBob==guessAlice)
+    {
+        return 1;
+    }
+    else if (guessBob == price) 
+    {
+         return 0;
+    }
+    else if(guessAlice == price)
+    {
+         return 2;
+    }
+    else {
+        return 1;
+    }
+  };
 const Player = {
     ...hasRandom,
-    getNumber: Fun([], UInt),
-    seeOutcome: Fun([UInt], Null),
-    seeNumbers: Fun([UInt, UInt], Null),
-    informTimeout: Fun([], Null)
-};
-
+    getRandomNumber:Fun([], UInt),
+    getGuess: Fun([], UInt),
+    seeOutcome: Fun([UInt,UInt], Null),
+    informTimeout: Fun([], Null),
+  };
+  
 export const main = Reach.App(() => {
-    const Asker = Participant('Asker', {
-        ...Player,
-        wager: UInt,
-        deadline: UInt,
+  const Alice = Participant('Alice', {
+    ...Player,
+    wager: UInt,
+    deadline: UInt, 
+  });
+  const Bob   = Participant('Bob', {
+    ...Player,
+    acceptWager: Fun([UInt], Null),
+  });
+  init();
+  const informTimeout = () => {
+    each([Alice, Bob], () => {
+      interact.informTimeout();
     });
-    const Guesser = Participant('Guesser', {
-        ...Player,
-        acceptWager: Fun([UInt], Null),
-    });
-    init();
+  };
+  Alice.only(() => {
+    const wager = declassify(interact.wager);
+    const randomAlice = declassify(interact.getRandomNumber());
+    const deadline = declassify(interact.deadline);
+  });
+  Alice.publish(wager,randomAlice,deadline).pay(wager);;
+  commit();
 
-    const informTimeout = () => {
-        each([Asker, Guesser], () => {
-        interact.informTimeout();
-        });
-    };
+  Bob.only(() => {
+    interact.acceptWager(wager);
+    const randomBob = declassify(interact.getRandomNumber());
+  });
+  Bob.publish(randomBob).pay(wager).timeout(relativeTime(deadline), () => closeTo(Alice, informTimeout));
 
-    Asker.only(() => {
-        const wager = declassify(interact.wager);
-        const deadline = declassify(interact.deadline);
-    });
+  const price = (randomBob+randomAlice)/2;
+  var outcome = DRAW;
+  invariant( balance() == 2 * wager && isOutcome(outcome) );
 
-    Asker.publish(wager, deadline).pay(wager);
-
+  while ( outcome == DRAW ) {
     commit();
+  Alice.only(() => {
+    const _guessAlice = interact.getGuess();
+    const [_commitAlice, _saltAlice] = makeCommitment(interact, _guessAlice);
+    const commitAlice = declassify(_commitAlice);
+  });
+  Alice.publish(commitAlice);
+  commit();
 
-    Guesser.only(() => {
-        interact.acceptWager(wager);
-    });
-
-    Guesser.pay(wager).timeout(relativeTime(deadline), () => closeTo(Asker, informTimeout));
-
-    commit();
-
-    Asker.only(() => {
-      const _askerNumber = interact.getNumber();
-      const [_commitAsker, _saltAsker] = makeCommitment(interact, _askerNumber);
-      const commitAsker = declassify(_commitAsker);
-    });
- 
-    commit();
-
-    Asker.publish(commitAsker).timeout(relativeTime(deadline), () => closeTo(Guesser, informTimeout));
-
-    commit();
-
-    unknowable(Guesser, Asker(_askerNumber, _saltAsker));
-
-    Guesser.only(() => {
-      const guesserNumber = declassify(interact.getNumber());
-    });
-
-    Guesser.publish(guesserNumber).timeout(relativeTime(deadline), () => closeTo(Asker, informTimeout));
-
-    commit();
-
-    Asker.only(() => {
-      const saltAsker = declassify(_saltAsker);
-      const askerNumber = declassify(_askerNumber);
-    });
-
-    Asker.publish(saltAsker, askerNumber).timeout(relativeTime(deadline), () => closeTo(Guesser, informTimeout));
-
-    checkCommitment(commitAsker, saltAsker, askerNumber);
-
-    const outcome = game(askerNumber, guesserNumber);
-
-    transfer((outcome / 100) * (2 * wager)).to(Guesser);
-    transfer(((100 - outcome) / 100) * (2 * wager)).to(Asker);
-
-    commit();
-
-    each([Asker, Guesser], () => {
-        interact.seeOutcome(outcome);
-        interact.seeNumbers(askerNumber, guesserNumber);
-    });
+  unknowable(Bob, Alice(_guessAlice, _saltAlice));
+  Bob.only(() => {
+    const guessBob = declassify(interact.getGuess());
+  });
+  Bob.publish(guessBob).timeout(relativeTime(deadline), () => closeTo(Alice, informTimeout));
+  commit();
+  Alice.only(() => {
+    const saltAlice = declassify(_saltAlice);
+    const guessAlice = declassify(_guessAlice);
+  });
+  Alice.publish(saltAlice, guessAlice).timeout(relativeTime(deadline), () => closeTo(Bob, informTimeout));;
+  checkCommitment(commitAlice, saltAlice, guessAlice);
+  outcome = winner(price, guessAlice, guessBob);
+  continue;
+}
+  const            [forAlice, forBob] =
+  outcome == 2 ? [       2,      0] :
+  outcome == 0 ? [       0,      2] :
+  /* tie      */ [       1,      1];
+  transfer(forAlice * wager).to(Alice);
+  transfer(forBob   * wager).to(Bob);
+  commit();
+  each([Alice, Bob], () => {
+    interact.seeOutcome(outcome,price);
+  });
 });
