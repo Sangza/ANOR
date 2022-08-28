@@ -1,8 +1,8 @@
 import React from 'react';
-import Deployer from './components/Deployer';
-import Timeout from './components/Timeout';
-import Header from './components/Header';
-import Footer from './components/Footer';
+import Deployer from '../components/Deployer';
+import Timeout from '../components/Timeout';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 const exports = {};
 
@@ -41,7 +41,7 @@ exports.WaitingForResults = class extends React.Component {
     return (
       <div className="anor_fn_modal share_box">
         <div className="modal_in">
-          <div className="modal_closer"><img src=".../public/svg/cancel.svg" alt="" className="fn__svg"></div>
+          <div className="modal_closer"><img src=".../public/svg/cancel.svg" alt="" className="fn__svg"/></div>
           <div className="modal_title">Price is Right</div>
           <div className="modal_content">
             <div className="share_title">
@@ -60,7 +60,7 @@ exports.Done = class extends React.Component {
     return (
       <div className="anor_fn_modal share_box">
         <div className="modal_in">
-          <div className="modal_closer"><img src=".../public/svg/cancel.svg" alt="" className="fn__svg"></div>
+          <div className="modal_closer"><img src=".../public/svg/cancel.svg" alt="" className="fn__svg"/></div>
           <div className="modal_title">Thank you for playing.</div>
           <div className="modal_content">
             <div className="share_title">

@@ -1,8 +1,8 @@
 {
-  "name": "luckpool",
+  "name": "ANOR",
   "version": "0.1.0",
   "private": true,
-  "description": "This is a game where players win a certain percentage of a price pool, if they are able to pick a unique number from a range of numbers. The game is powered by React and Reach on the Algorand Blockchain",
+  "description": "The World's first NFT Game built with Reach.",
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",

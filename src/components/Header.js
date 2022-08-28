@@ -3,13 +3,14 @@ import React from "react";
 class Header extends React.Component {
 	render() {
 		return (
+			<div>
 		        <header className="anor_fn_header">
 					<div className="container">
 						<div className="header_in">
 							
 							<div className="header_left">
 								<div className="fn_logo">
-									<a><img src=".../public/img/logo.png" alt=""></a>
+									<a><img src=".../public/img/logo.png" alt=""/></a>
 								</div>
 								<div className="nav_list">
 									<ul className="main_menu">
@@ -55,8 +56,9 @@ class Header extends React.Component {
 						</div>
 					</div>
 				</div>
+			</div>
 		)
 	}
 }
 
-exports default Header;
+export default Header;

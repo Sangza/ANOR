@@ -1,8 +1,8 @@
 import React from 'react';
 import PlayerViews from './PlayerViews';
-import Attacher from './components/Attacher';
-import Header from './components/Header';
-import Footer from './components/Footer';
+import Attacher from '../components/Attacher';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 const exports = {...PlayerViews};
 
@@ -36,7 +36,7 @@ exports.Attach = class extends React.Component {
               </li>
         </ul>
         <div className="disc_button">
-          <a className="anor_fn_button small add" onClick={() => parent.attach(ctcInfoStr)} disabled={!ctcInfoStr}>Attach/a>
+          <a className="anor_fn_button small add" onClick={() => parent.attach(ctcInfoStr)} disabled={!ctcInfoStr}>Attach</a>
         </div>
       </div>
     );
@@ -48,7 +48,7 @@ exports.Attaching = class extends React.Component {
     return (
       <div className="anor_fn_modal share_box">
         <div className="modal_in">
-          <div className="modal_closer"><img src=".../public/svg/cancel.svg" alt="" className="fn__svg"></div>
+          <div className="modal_closer"><img src=".../public/svg/cancel.svg" alt="" className="fn__svg"/></div>
           <div className="modal_title">Attacher (Weddy)</div>
           <div className="modal_content">
             <div className="share_title">
@@ -68,7 +68,7 @@ exports.AcceptTerms = class extends React.Component {
     return (
       <div className="anor_fn_modal share_box">
         <div className="modal_in">
-          <div className="modal_closer"><img src=".../public/svg/cancel.svg" alt="" className="fn__svg"></div>
+          <div className="modal_closer"><img src=".../public/svg/cancel.svg" alt="" className="fn__svg"/></div>
           <div className="modal_title">Attacher (Weddy)</div>
           <div className="modal_content">
             <div className="share_title">
@@ -93,7 +93,7 @@ exports.WaitingForTurn = class extends React.Component {
     return (
       <div className="anor_fn_modal share_box">
         <div className="modal_in">
-          <div className="modal_closer"><img src=".../public/svg/cancel.svg" alt="" className="fn__svg"></div>
+          <div className="modal_closer"><img src=".../public/svg/cancel.svg" alt="" className="fn__svg"/></div>
           <div className="modal_title">Attacher (Weddy)</div>
           <div className="modal_content">
             <div className="share_title">

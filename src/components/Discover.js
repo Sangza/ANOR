@@ -3,7 +3,8 @@ import React from "react";
 class Body extends React.Component {
 	render() {
 		return (
-			<section id="discover">
+			<div>
+				<section id="discover">
 					<div className="container">
 						<div className="anor_fn_discover">
 						
@@ -27,13 +28,13 @@ class Body extends React.Component {
 								<div className="anor_fn_gallery_2_1">
 									<div className="gallery_in">
 										<div className="item">
-											<img src=".../public/img/discovery/triple/1.jpg" alt="">
+											<img src=".../public/img/discovery/triple/1.jpg" alt=""/>
 										</div>
 										<div className="item row2">
-											<img src=".../public/img/discovery/triple/2.jpg" alt="">
+											<img src=".../public/img/discovery/triple/2.jpg" alt=""/>
 										</div>
 										<div className="item">
-											<img src=".../public/img/discovery/triple/3.jpg" alt="">
+											<img src=".../public/img/discovery/triple/3.jpg" alt=""/>
 										</div>
 									</div>
 								</div>
@@ -62,9 +63,9 @@ class Body extends React.Component {
 											<div className="img_holder">
 												<a className="full_link"></a>
 												<a className="anor_fn_like" data-id="" data-title="Rodman's Haircut #3009">
-													<img src=".../public/svg/like.svg" alt="" className="fn__svg">
+													<img src=".../public/svg/like.svg" alt="" className="fn__svg"/>
 												</a>
-												<img src=".../public/img/auction/1.jpg" alt="">
+												<img src=".../public/img/auction/1.jpg" alt=""/>
 												<div className="action_box">
 													<a className="action_btn">
 														<span></span>
@@ -99,8 +100,10 @@ class Body extends React.Component {
 					</div>
 				</div>
 			</section>
+			</div>
+			
 		)
 	}
 }
 
-exports default Body;
+export default Body;

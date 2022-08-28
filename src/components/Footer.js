@@ -3,7 +3,8 @@ import React from "react";
 class Footer extends React.Component {
 	render() {
 		return (
-			<footer id="footer">
+			<div>
+				<footer id="footer">
 				<div className="anor_fn_footer">
 					
 					<div className="footer_bottom">
@@ -42,6 +43,8 @@ class Footer extends React.Component {
 
 			<div className="frenify-cursor cursor-outer" data-default="yes" data-link="yes" data-slider="yes"><span className="fn-cursor"></span></div>
 			<div className="frenify-cursor cursor-inner" data-default="yes" data-link="yes" data-slider="yes"><span className="fn-cursor"><span className="fn-left"></span><span className="fn-right"></span></span></div>
+			</div>
+			
 		)
 	}
 }
